@@ -13,10 +13,74 @@
 {
     display: flex;
     width:400px;
+    flex-shrink: 0;
     flex-direction: column;
+    background-color: beige;
+    padding: 48px 24px;
+    border-radius: 16px;
+    border-width: 8px;
+    border-color: lightgray;
+    border-style: solid;
 }
 
 .output
 {
+    font-size: 48px;
+    padding: 4px 4px;
+    text-align: right;
     background-color: lightgray;
+    box-shadow: 
+    inset -2px -2px teal,
+    inset 2px 2px white;
+    margin-bottom: 24px;
+}
+
+.buttons
+{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.specials
+{
+    display: flex;
+    flex-grow: 1;
+    flex-basis: 100%;
+    justify-content: space-between;
+}
+
+.numbers
+{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap:2px;
+}
+
+.number
+{
+    background-color: lightgray;
+}
+
+.operation
+{
+    background-color: whitesmoke;
+}
+
+.buttons button{
+    height: 98.5px;
+    aspect-ratio: 1;
+    font-weight: bolder;
+    border-color: darkgray;
+    font-size: 24px;
+    margin: 0px;
+}
+
+.number.zero
+{
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-width: 40px;
+    aspect-ratio: auto;
 }
