@@ -7,19 +7,26 @@ let outputElement = document.querySelector(".output");
 
 displayValue('0');
 
-for(let i = 0; i <= 9; i++)
-{
+for (let i = 0; i <= 9; i++) {
     let numberElement = document.querySelector(`#num${i}`);
     numberElement.addEventListener("click", () => {
-        displayValue(i);
+        onNumberPressed(i);
     })
 }
 
 let clearButton = document.querySelector("#clear.special");
 clearButton.addEventListener("click", clear);
 
-function clear()
-{
+let operations = document.querySelectorAll(".operation");
+for (operationElement of operations) {
+    let operatorText = operationElement.textContent;
+
+    operationElement.addEventListener("click", () => {
+        onOperationPressed(operatorText);
+    });
+}
+
+function clear() {
     firstNumber = null;
     secondNumber = null;
     operation = null;
@@ -27,43 +34,74 @@ function clear()
     displayValue('0', false);
 }
 
-function displayValue(charToDisplay, append = true)
-{
-    if(outputElement.textContent === `0`)
-    {
+function onNumberPressed(numberValue) {
+    if (outputElement.textContent === `0` ||
+        operation !== null) {
+        displayValue(numberValue, false);
+    }
+    else {
+        displayValue(numberValue);
+    }
+}
+
+function onOperationPressed(operationValue) {
+    if (operationValue == '=') {
+        secondNumber = outputValue;
+        onEqualsPressed();
+        return;
+    }
+
+    firstNumber = outputValue;
+    switch (operationValue) {
+        case '+':
+            operation = add;
+            break;
+        case '-':
+            operation = subtract;
+            break;
+        case '/':
+            operation = divide;
+            break;
+        case '*':
+            operation = multiply;
+            break;
+    }
+}
+
+function onEqualsPressed() {
+    let result = operate(firstNumber, secondNumber, operation);
+    displayValue(result, false);
+
+    firstNumber = result;
+    secondNumber = null;
+    operation = null;
+}
+
+function displayValue(charToDisplay, append = true) {
+    if (append)
+        outputElement.textContent += charToDisplay;
+    else
         outputElement.textContent = charToDisplay;
-    }
-    else{
-        if(append)
-            outputElement.textContent += charToDisplay;
-        else
-            outputElement.textContent = charToDisplay;
-    }
 
     outputValue = outputElement.textContent;
 }
 
-function operate(a,b,operator)
-{
-    operator(a,b);
+function operate(a, b, operator) {
+    return operator(+a, +b);
 }
 
-function add(a,b)
-{
+function add(a, b) {
     return a + b;
 }
 
-function subtract(a,b)
-{
+function subtract(a, b) {
     return a - b;
 }
 
-function multiply(a,b)
-{
+function multiply(a, b) {
     return a * b;
 }
 
-function divide(a,b)
-{
+function divide(a, b) {
     return a / b;
 }
