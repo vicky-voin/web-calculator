@@ -79,11 +79,15 @@ function onEqualsPressed() {
 
 function displayValue(charToDisplay, append = true) {
     if (append)
+    {
         outputElement.textContent += charToDisplay;
+        outputValue = outputElement.textContent;
+    }
     else
-        outputElement.textContent = charToDisplay;
-
-    outputValue = outputElement.textContent;
+    {
+        outputValue = charToDisplay;
+        outputElement.textContent = +charToDisplay.toFixed(6);
+    }
 }
 
 function operate(a, b, operator) {
