@@ -15,16 +15,31 @@ for(let i = 0; i <= 9; i++)
     })
 }
 
-function displayValue(charToDisplay)
+let clearButton = document.querySelector("#clear.special");
+clearButton.addEventListener("click", clear);
+
+function clear()
+{
+    firstNumber = null;
+    secondNumber = null;
+    operation = null;
+
+    displayValue('0', false);
+}
+
+function displayValue(charToDisplay, append = true)
 {
     if(outputElement.textContent === `0`)
     {
         outputElement.textContent = charToDisplay;
     }
     else{
-        outputElement.textContent += charToDisplay;
+        if(append)
+            outputElement.textContent += charToDisplay;
+        else
+            outputElement.textContent = charToDisplay;
     }
-    
+
     outputValue = outputElement.textContent;
 }
 
