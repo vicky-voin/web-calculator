@@ -5,7 +5,7 @@ let operation;
 let outputValue = '0';
 let outputElement = document.querySelector(".output");
 
-displayValue('0', false);
+clear();
 
 for (let i = 0; i <= 9; i++) {
     let numberElement = document.querySelector(`#num${i}`);
@@ -35,24 +35,33 @@ function clear() {
 }
 
 function onNumberPressed(numberValue) {
-    if (outputElement.textContent === `0` ||
-        operation !== null) {
-        displayValue(numberValue, false);
+    let replaceOutputValue = outputElement.textContent == '0' || operation !== null;
+    displayValue(numberValue, !replaceOutputValue);
+
+    if(firstNumber == null)
+    {
+        firstNumber = outputValue;
     }
-    else {
-        displayValue(numberValue);
+    else if (operation != null && firstNumber != null)
+    {
+        secondNumber = outputValue;
     }
 }
 
 function onOperationPressed(operationValue) {
     let isChainingOperators = operation != null;
+    let equalsPressed = operationValue == '=';
+    let canProcessEquals = firstNumber != null && secondNumber != null && operation != null;
 
-    if (operationValue == '=' || isChainingOperators) {
-        secondNumber = outputValue;
+    if (equalsPressed && !canProcessEquals) {
+        return;
+    }
+
+    if (equalsPressed || isChainingOperators) {
+
         onEqualsPressed();
 
-        if(!isChainingOperators)
-        {
+        if (!isChainingOperators) {
             return;
         }
     }
@@ -84,22 +93,18 @@ function onEqualsPressed() {
 }
 
 function displayValue(charToDisplay, append = true) {
-    if (append)
-    {
+    if (append) {
         outputElement.textContent += charToDisplay;
         outputValue = outputElement.textContent;
     }
-    else
-    {
+    else {
         outputValue = charToDisplay;
         let valueAsNumber = +charToDisplay;
-        if(Number.isInteger(valueAsNumber))
-        {
+        if (Number.isInteger(valueAsNumber)) {
             outputElement.textContent = valueAsNumber;
         }
-        else
-        {
-            outputElement.textContent = (+charToDisplay).toFixed(6);
+        else {
+            outputElement.textContent = valueAsNumber.toFixed(6);
         }
     }
 }
