@@ -5,7 +5,7 @@ let operation;
 let outputValue = '0';
 let outputElement = document.querySelector(".output");
 
-displayValue('0');
+displayValue('0', false);
 
 for (let i = 0; i <= 9; i++) {
     let numberElement = document.querySelector(`#num${i}`);
@@ -45,10 +45,16 @@ function onNumberPressed(numberValue) {
 }
 
 function onOperationPressed(operationValue) {
-    if (operationValue == '=') {
+    let isChainingOperators = operation != null;
+
+    if (operationValue == '=' || isChainingOperators) {
         secondNumber = outputValue;
         onEqualsPressed();
-        return;
+
+        if(!isChainingOperators)
+        {
+            return;
+        }
     }
 
     firstNumber = outputValue;
@@ -86,7 +92,15 @@ function displayValue(charToDisplay, append = true) {
     else
     {
         outputValue = charToDisplay;
-        outputElement.textContent = +charToDisplay.toFixed(6);
+        let valueAsNumber = +charToDisplay;
+        if(Number.isInteger(valueAsNumber))
+        {
+            outputElement.textContent = valueAsNumber;
+        }
+        else
+        {
+            outputElement.textContent = (+charToDisplay).toFixed(6);
+        }
     }
 }
 
