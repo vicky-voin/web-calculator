@@ -35,20 +35,28 @@ function clear() {
 }
 
 function onNumberPressed(numberValue) {
+    //do not process numbers if the output is displaying an error message
+    if (isNaN(outputElement.textContent)) {
+        return;
+    }
+
     let replaceOutputValue = outputElement.textContent == '0' || operation !== null;
     displayValue(numberValue, !replaceOutputValue);
 
-    if(firstNumber == null)
-    {
+    if (firstNumber == null) {
         firstNumber = outputValue;
     }
-    else if (operation != null && firstNumber != null)
-    {
+    else if (operation != null && firstNumber != null) {
         secondNumber = outputValue;
     }
 }
 
 function onOperationPressed(operationValue) {
+    //do not process operators if the output is displaying an error message
+    if (isNaN(outputElement.textContent)) {
+        return;
+    }
+
     let isChainingOperators = operation != null;
     let equalsPressed = operationValue == '=';
     let canProcessEquals = firstNumber != null && secondNumber != null && operation != null;
@@ -87,7 +95,7 @@ function onEqualsPressed() {
     let result = operate(firstNumber, secondNumber, operation);
     displayValue(result, false);
 
-    firstNumber = result;
+    firstNumber = isNaN(result)? null : result;
     secondNumber = null;
     operation = null;
 }
@@ -103,8 +111,11 @@ function displayValue(charToDisplay, append = true) {
         if (Number.isInteger(valueAsNumber)) {
             outputElement.textContent = valueAsNumber;
         }
-        else {
+        else if (!Number.isNaN(valueAsNumber)) {
             outputElement.textContent = valueAsNumber.toFixed(6);
+        }
+        else {
+            outputElement.textContent = charToDisplay;
         }
     }
 }
@@ -126,5 +137,8 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
+    if (b == 0)
+        return 'Cannot divide by 0!';
+
     return a / b;
 }
