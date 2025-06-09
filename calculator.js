@@ -35,12 +35,11 @@ function clear() {
 }
 
 function onNumberPressed(numberValue) {
-    //do not process numbers if the output is displaying an error message
-    if (isNaN(outputElement.textContent)) {
+    if (isDisplayingError()) {
         return;
     }
 
-    let replaceOutputValue = outputElement.textContent == '0' || operation !== null;
+    let replaceOutputValue = outputElement.textContent == '0' || operation !== null || firstNumber == null;
     displayValue(numberValue, !replaceOutputValue);
 
     if (firstNumber == null) {
@@ -52,8 +51,7 @@ function onNumberPressed(numberValue) {
 }
 
 function onOperationPressed(operationValue) {
-    //do not process operators if the output is displaying an error message
-    if (isNaN(outputElement.textContent)) {
+    if (isDisplayingError()) {
         return;
     }
 
@@ -68,6 +66,11 @@ function onOperationPressed(operationValue) {
 
         if(equalsPressed)
             return;
+    }
+
+    if(firstNumber == null)
+    {
+        firstNumber = outputValue;
     }
 
     switch (operationValue) {
@@ -90,9 +93,14 @@ function onEqualsPressed() {
     let result = operate(firstNumber, secondNumber, operation);
     displayValue(result, false);
 
-    firstNumber = isNaN(result)? null : result;
+    firstNumber = null;
     secondNumber = null;
     operation = null;
+}
+
+function isDisplayingError()
+{
+    return isNaN(outputElement.textContent);
 }
 
 function displayValue(charToDisplay, append = true) {
