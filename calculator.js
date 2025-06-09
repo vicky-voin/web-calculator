@@ -57,24 +57,19 @@ function onOperationPressed(operationValue) {
         return;
     }
 
-    let isChainingOperators = operation != null;
     let equalsPressed = operationValue == '=';
     let canProcessEquals = firstNumber != null && secondNumber != null && operation != null;
 
     if (equalsPressed && !canProcessEquals) {
         return;
     }
-
-    if (equalsPressed || isChainingOperators) {
-
+    else if(canProcessEquals){
         onEqualsPressed();
 
-        if (!isChainingOperators) {
+        if(equalsPressed)
             return;
-        }
     }
 
-    firstNumber = outputValue;
     switch (operationValue) {
         case '+':
             operation = add;
